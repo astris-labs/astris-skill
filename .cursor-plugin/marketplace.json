@@ -1,0 +1,17 @@
+{
+  "name": "astris",
+  "owner": {
+    "name": "Astris Labs"
+  },
+  "metadata": {
+    "description": "Astris deploys and manages apps for the account that owns the API key."
+  },
+  "plugins": [
+    {
+      "name": "astris",
+      "source": "./",
+      "description": "Astris deploys and manages apps for the account that owns the API key.",
+      "skills": "./skills/astris"
+    }
+  ]
+}
