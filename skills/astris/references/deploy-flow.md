@@ -1,14 +1,12 @@
 # Deploy flow
 
-Call the tools in this order.
+Read the repository first, then call the tools in this order.
 
-1. Project and app: call `deploy` with no app_id. That creates the app and queues its first deploy.
-2. Database: call `database`.
-3. Env: call `env`.
-4. Deploy: call `deploy` with the app_id returned in step 1. That redeploys the same app. Do not create it again.
-5. Poll status: call `status`.
-6. Domain: call `domains`.
+Before the first deploy, find out from the repository the port the app listens on, whether it has a Dockerfile and where it is, whether it needs a database, and which environment variables it reads.
 
-Without app_id it creates a project when needed, creates an app from a public Git URL, then queues a deploy.
-
-`database` create looks up the project by name.
+1. Create the app: call `deploy` with no `app_id` and the app's public Git URL. Pass `port` and `dockerfile` when the repository shows them; without `port`, the app is created on port 3000. Port and Dockerfile can be set only at creation, so if the repository does not show the port, ask the user before this step. This creates the project if needed, creates the app and queues its first deploy. Keep the `app_id` it returns.
+2. Database, only when the app needs one: call `database` with the project name. It returns the host, port, user and password, and the database name when `database` is a string. When `kind` is `redis`, `database` is null and there is no database name. Do not set a variable from that null. The app does not receive these until step 3.
+3. Variables, when the app reads any, and always after step 2 created a database: call `env` with the `app_id`. Set each value under the variable name the app's own code reads for it, including the five database values from step 2. The database port is not the port the app listens on; never write it into the app's own port setting.
+4. Redeploy, only when a database was created or variables were set: call `deploy` with the `app_id` from step 1. This redeploys the same app. Do not create a second one.
+5. Poll status: call `status` with the `app_id`. `deployments` is newest first, at most five items, and each item has `status`, `created_at` and `finished_at`. Repeat this step until the first item counts: it counts once you have seen that item, identified by its `created_at`, with `status` `running` during this step. An empty list, a null `status`, an application `status` of `idle`, or a first item you have not seen `running` means the new deploy has not shown yet, so repeat this step. The deploy has finished when the first item counts, its `status` is `done`, and the application's `status` is not `error`; then go on to step 6. The deploy has failed when the first item counts and its `status` is `error`; tell the user the application's `status` and that item's `status`, `created_at` and `finished_at`, then stop. If the first item counts and its `status` is `cancelled`, or the application's `status` is `error` while the first item counts and is not `running`, tell the user the values you read and stop; neither is finished or failed. After 24 repeats without a finished or failed result, tell the user the deploy has not finished yet, give the values you read, and stop.
+6. Domain: call `domains` with the `app_id`. It returns `hostname` and `kind`. `hostname` is the app's address. Give that hostname to the user.
