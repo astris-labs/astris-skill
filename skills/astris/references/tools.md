@@ -8,6 +8,7 @@
 | `domains` | Bind one astris.live hostname to an application. Omit slug to use the application slug. |
 | `restart` | Restart an application. |
 | `database` | Create a Postgres or Redis database or read its status. The password is returned only on create. |
+| `diagnose` | Explains a failed deploy or an app that stopped (its exit code, or that it went over its memory limit), and returns the raw evidence when it cannot tell the cause. An empty diagnosis comes with a note that says what Astris checked. |
 
 Later tools take an Astris id from an earlier result.
 
