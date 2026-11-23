@@ -38,6 +38,14 @@ tool_timeout_sec = 180
 
 Set `ASTRIS_API_KEY` to the key. The file names that variable. It does not contain the key.
 
+## Command line
+
+Needs Node 22 or later.
+
+```text
+npm install --global @astris-labs/cli
+```
+
 ## This skill
 
 ### Claude Code

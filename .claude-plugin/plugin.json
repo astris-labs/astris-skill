@@ -1,0 +1,13 @@
+{
+  "name": "astris",
+  "displayName": "Astris",
+  "description": "Astris deploys and manages apps for the account that owns the API key.",
+  "author": {
+    "name": "Astris Labs",
+    "url": "https://astris.run"
+  },
+  "homepage": "https://astris.run",
+  "repository": "https://github.com/astris-labs/astris-skill",
+  "privacyPolicyUrl": "https://astris.run/privacy",
+  "termsOfServiceUrl": "https://astris.run/terms"
+}

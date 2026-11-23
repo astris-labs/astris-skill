@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "astris": {
+      "type": "http",
+      "url": "https://api.astris.run/mcp",
+      "headers": {
+        "Authorization": "Bearer ${ASTRIS_API_KEY}"
+      }
+    }
+  }
+}

@@ -2,7 +2,7 @@
 
 This skill tells a coding agent how to deploy and manage apps on Astris through the Astris MCP.
 
-Ask it to deploy an app, read status, set variables, bind a hostname, restart an app, or create a Postgres or Redis database.
+Ask it to deploy an app, run a worker or a scheduled job, read status, set variables, bind a hostname, restart an app, or create a Postgres or Redis database.
 
 ## Claude Code
 
