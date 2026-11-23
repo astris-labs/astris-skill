@@ -11,7 +11,7 @@
 | `deploy_hook` | Read this app's push-to-deploy URL. The URL is a secret, and anyone who holds it can start a deploy of this app. Never paste it into a public place, a log, a file in the repository, a commit message or an issue. To wire up GitHub, open the repository, then Settings, Webhooks, Add webhook, put the URL in Payload URL, set Content type to application/json, and subscribe to push events. |
 | `restart` | Restart an application. |
 | `rollback` | Roll an application back to its last working deploy, or to a chosen commit from its last ten deploys. Env values return to that deploy's values until the next deploy. |
-| `database` | Create a Postgres or Redis database, read its status, run a backup of a Postgres database, list its backups, restore a Postgres database from one of its backups, import an uploaded dump, or delete one. The password is returned only on create. |
+| `database` | Create a Postgres or Redis database, read its status, run a backup of a Postgres database, list its backups, restore a Postgres database from one of its backups, get an upload address for a dump, import an uploaded dump, or delete one. The password is returned only on create. |
 | `compose` | Compose stacks cannot be created or redeployed. Deploy each service from your compose file as an app. For a database service, create a managed database instead. Stop, start, read the status of, or remove an existing stack by its compose_id. Removing a stack deletes its volumes and all their data. |
 | `diagnose` | Explains a failed deploy or an app that stopped (its exit code, or that it went over its memory limit), and returns the raw evidence when it cannot tell the cause. An empty diagnosis comes with a note that says what Astris checked. |
 | `list` | List the apps, the databases, the Compose stacks, or the projects on this account. |
@@ -63,13 +63,16 @@ Later tools take an Astris id from an earlier result.
 | `restart` | `app_id` | Astris application id. |
 | `rollback` | `app_id` | Astris application id. |
 | `rollback` | `commit` | Optional. 7 to 40 hex characters of a commit from the last ten deploys. |
-| `database` | `action` | create, status, backup, backups, restore, import, or delete. |
+| `database` | `action` | create, status, backup, backups, restore, import_upload, import, or delete. |
 | `database` | `project` | Project name. Required when action is create. |
 | `database` | `name` | Database name. Required when action is create. |
 | `database` | `kind` | postgres or redis. Required when action is create. |
-| `database` | `database_id` | Astris database id. Required when action is status, backup, backups, restore, import, or delete. |
+| `database` | `database_id` | Astris database id. Required when action is status, backup, backups, restore, import_upload, import, or delete. |
 | `database` | `dump_key` | Backup key from action backups. Required when action is restore. |
 | `database` | `upload_id` | Upload grant id from POST /v1/databases/:id/import/upload. Required when action is import. |
+| `database` | `size_bytes` | Size of the dump file in bytes. Required when action is import_upload. |
+| `database` | `format` | custom for a pg_dump custom archive, or sql. Required when action is import_upload. |
+| `database` | `sha256` | Lower-case hex SHA-256 of the dump file. Required when action is import_upload. |
 | `database` | `confirm` | Set to true to go ahead with delete, restore, or import. Without it, the call does nothing. |
 | `compose` | `action` | deploy, stop, start, status, or remove. Defaults to deploy. |
 | `compose` | `compose_id` | Astris compose stack id. Required for stop, start, status, or remove. |
