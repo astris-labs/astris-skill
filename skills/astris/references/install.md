@@ -2,7 +2,7 @@
 
 ## Astris MCP
 
-Astris MCP is a remote server at `https://api.astris.run/mcp`. Your client sends your Astris API key as `Authorization: Bearer PASTE_KEY_HERE`. Replace `PASTE_KEY_HERE` with the key. Do not commit a file that contains the key.
+Astris MCP is a remote server at `https://api.astris.run/mcp`. Your client sends your Astris API key as `Authorization: Bearer` with the key. Claude Code and Codex read the key from the `ASTRIS_API_KEY` environment variable, so the key stays out of the commands you type, where your shell's history would keep it. In Cursor's file, replace `PASTE_KEY_HERE` with the key. Do not commit a file that contains the key.
 
 ### Cursor
 
@@ -23,8 +23,10 @@ Paste this into `~/.cursor/mcp.json`.
 
 ### Claude Code
 
+Set `ASTRIS_API_KEY` to your key, then run this command. The command names that variable. It does not contain the key. To set it without putting the key in your shell's history, run `read -rs ASTRIS_API_KEY && export ASTRIS_API_KEY` on macOS or Linux, or `$env:ASTRIS_API_KEY = [System.Net.NetworkCredential]::new('', (Read-Host -AsSecureString 'Astris API key')).Password` in Windows PowerShell, then paste the key and press Enter. Start Claude Code from that terminal.
+
 ```text
-claude mcp add --transport http astris https://api.astris.run/mcp --header "Authorization: Bearer PASTE_KEY_HERE"
+claude mcp add --transport http astris https://api.astris.run/mcp --header 'Authorization: Bearer ${ASTRIS_API_KEY}'
 ```
 
 ### Codex
