@@ -1,6 +1,6 @@
 ---
 name: astris
-description: Deploy and manage apps on Astris through the Astris MCP. Use when the user wants to check a repository with pre-flight before a deploy, deploy an app, read status, set variables, bind a hostname, restart, stop or start an app, explain a failed deploy, remove an app, create a Postgres or Redis database, back up a Postgres database, list a Postgres database's backups, delete a database, create a storage bucket, list or read this account's storage buckets, delete an empty storage bucket, list apps, databases, Compose stacks or projects, read a project, delete an empty project, read logs, get a Checkout or Customer Portal link, read the account balance, redeem a beta code or add cash, see what each plan gives, see the room left on the plan, or see which account and key it is acting as.
+description: Deploy and manage apps on Astris through the Astris MCP. Use when the user wants to check a repository with pre-flight before a deploy, deploy an app, read status, set variables, bind a hostname, restart, stop or start an app, explain a failed deploy, remove an app, create a Postgres or Redis database, back up a Postgres database, list a Postgres database's backups, delete a database, create a storage bucket, list or read this account's storage buckets, delete an empty storage bucket, list apps, databases, Compose stacks or projects, read a project, delete an empty project, read logs, get a Checkout or Customer Portal link, change the plan, read the account balance, redeem a beta code or add cash, see what each plan gives, see the room left on the plan, or see which account and key it is acting as.
 ---
 
 # Astris
@@ -18,6 +18,7 @@ An app that serves no web page deploys the same way with `kind` `worker` or `kin
 If a create is refused because the account has no plan, do not retry it. Tell the user to choose a plan on the Billing page in the Console, then try again.
 To get a Checkout link, call `billing` with action `checkout` and the plan the user chose, then give the user the link. Never choose a plan for the user.
 To see the balance, call `billing` with action `balance`. To use a beta code, call `billing` with action `redeem` and the code the user gives you. To add cash, call `billing` with action `add_cash` and the amount the user chose, then give the user the link. A deploy key cannot redeem or add cash. Tell the user to use the Console Billing page.
+To change the plan, call `billing` with action `switch` and the plan the user chose. For an account that pays from its balance, the plan changes at once and the answer gives the new hourly rate, so call it only after the user has picked the plan. If Astris refuses a smaller plan because it cannot hold what the account uses, the answer names each app, database, compose stack or bucket and its size. Show that list to the user, and switch again only after they have removed or shrunk enough. Code credit alone pays only for the two smallest plans. A deploy key or a key for one project cannot change the plan.
 
 Before a change to the data, call `database` with action `backup`. Redis has no backup.
 

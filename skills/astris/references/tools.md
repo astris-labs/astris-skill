@@ -23,7 +23,7 @@
 | `app_start` | Start an application. |
 | `app_stop` | Stop an application. |
 | `storage` | Create a storage bucket and get its S3 credentials, list this account's buckets, read one bucket, issue a new key for one bucket, or delete an empty bucket. The secret key appears only when you create a bucket or issue a new key, so store it now. |
-| `billing` | Get a Checkout link for a plan, or a Customer Portal link for this account, or change the plan of an account that already pays. Checkout needs a plan name. The API says which plans are on sale. Portal takes no plan. Switch needs a plan name. A smaller plan starts at the next renewal. A bigger plan starts now and charges the card on file, so the first switch call changes nothing and answers what it costs and a confirm value: show that to the person, wait for their yes, then call switch again with the same plan and that confirm value. Never send confirm without that yes. With a deploy key, that second call mails the account owner, who approves on the Console Billing page; the plan changes only then. Keep cancels a smaller plan that waits for the renewal. Balance reads the account's Astris balance and plan state. Redeem applies a beta code to the account. Add cash returns a payment link for a whole-dollar amount. |
+| `billing` | Get a Checkout link for a plan, or a Customer Portal link for this account, or change the plan of an account that already pays. Checkout needs a plan name. The API says which plans are on sale. Portal takes no plan. Switch needs a plan name. It changes the plan at once, up or down, and the plan is then paid by the hour from the Astris balance, so only call switch after the person has picked a plan. Keep answers the plan the account has now. A smaller plan that cannot hold what the account uses is refused with each app, database, compose stack and bucket by name and size; free that room, then switch again. A deploy key or a key for one project cannot change the plan or read the balance. Balance reads the account's Astris balance and plan state. Redeem applies a beta code to the account. Add cash returns a payment link for a whole-dollar amount. |
 | `project` | Read one project on this account, or delete one that holds nothing. Deleting a project is final, and a project that still holds an application, a database, or a compose stack is refused by the route. |
 
 Later tools take an Astris id from an earlier result.
@@ -92,7 +92,6 @@ Later tools take an Astris id from an earlier result.
 | `storage` | `bucket_id` | Astris bucket id. Required when action is show, rotate, or delete. |
 | `billing` | `action` | checkout, portal, switch, keep, balance, redeem or add_cash. |
 | `billing` | `plan` | Plan name for checkout or switch. One of starter, growth, pro, scale, business. The API says which of these are on sale. |
-| `billing` | `confirm` | For switch to a bigger plan only: the confirm value from the first switch answer, sent after the person said yes. |
 | `billing` | `code` | Beta code for redeem. Required when action is redeem. |
 | `billing` | `amount` | Whole US dollars to add for add_cash. Required when action is add_cash. |
 | `project` | `action` | show or delete. |
